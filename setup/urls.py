@@ -15,8 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+# from galeria.views import index -> Foi para urls.py da galeria
 
+# # Agora, precisamos tornar o urlpatterns dp arquivo urls.py da galeria disponível aqui. 
+# Para isso, removeremos a linha de código da galeria.views. 
+# Em django.urls, vamos importar, além de path, um método chamado include.
+
+# Vamos remover index do último path do código e substitui-lo por include(). 
+# Dentro dos parênteses, vamos inserir o nome do aplicativo, "galeria", e urls:
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # path('', index),  -> Não precisamos mais...
+    path('', include('galeria.urls')),  
 ]
