@@ -7,3 +7,5 @@ def index(request):
     # return HttpResponse('<h1> Alura Space </h1>') - Não precisamos mais deste
     return render(request, 'galeria/index.html')
     
+def imagem(request):
+    return render(request, 'galeria/imagem.html')
