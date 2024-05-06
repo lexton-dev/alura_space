@@ -1,4 +1,3 @@
-
 {% extends 'galeria/base.html' %}    
 {% load static %}
 {% block content %}
@@ -22,25 +21,35 @@
                     <div class="cards">
                         <h2 class="cards__titulo">Navegue pela galeria</h2>
                         <ul class="cards__lista">
-
-                            <!-- id do dicionario dados em views e info é o value, são as informações do id -->
-                            {% for foto_id, info in cards.items %}<!-- cards que está na views -->
+                            
+                            {% if cards %}<!-- Se houver cards mostre -->
+                            {% for fotografia in cards %}<!-- cards que está na views -->
                             <li class="card">
-                                <a href="{% url 'imagem' %}">
-                                    <img class="card__imagem" src="{% static '/assets/imagens/galeria/carina-nebula.png' %}" alt="foto">
+                                <a href="{% url 'imagem' fotografia.id %}"><!-- Leva para a página imagem.html e tb envia fotografia.id para urls.py -->    
+                                
+                                {% if fotografia.foto == '' or fotografia.foto == null %}    
+                                    <img class="card__imagem" src="{% static '/assets/imagens/galeria/sem_imagem.jpg'%}" alt="foto">
+                                {% else %}
+                                    <img class="card__imagem" src="{{ fotografia.foto.url }}" alt="foto">
+                                {% endif %}
+ 
                                 </a>
                                 <span class="card__tag">Estrelas</span>
                                 <div class="card__info">
-                                    <p class="card__titulo"> {{ info.nome }} </p><!-- nome vem do dicionário da views -->
+                                    <!--<p class="card__titulo"> {{ info.nome }} </p> nome vem do dicionário da views -->
+                                    <p class="card__titulo"> {{ fotografia.nome }} </p> <!--nome vem do cards da views -->
                                     <div class="card__texto">
-                                        <p class="card__descricao"> {{ info.legenda }} </p><!-- legenda vem do dicionario da views -->
+                                       <!-- <p class="card__descricao"> {{ info.legenda }} </p> legenda vem do dicionario da views -->
+                                        <p class="card__descricao"> {{ fotografia.legenda }} </p><!-- legenda vem do cards da views -->
                                         <span>
                                             <img src="{% static '/assets/ícones/1x/favorite_outline.png' %}" alt="ícone de coração">
                                         </span>
                                     </div>
                                 </div>
                             </li>
-                            {% endfor %}    
+                            {% endfor %} 
+                            {% else %} <!-- Se não houver cards nada acontece --> 
+                            {% endif %}  
 
                         </ul>
                     </div>
@@ -49,6 +58,5 @@
             </section>
         </main>
     </div>
-
 
 {% endblock %}

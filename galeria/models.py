@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 
@@ -14,15 +15,39 @@ from django.db import models
 # Logo após, vamos inserir a "descricao" que será um TextField. 
 # A descrição será um texto mais longo comentando o que há na imagem. 
 # Depois inserimos o campo "foto" (para exibirmos o caminho da foto), que será um CharField (porque desejamos o nome que colocaremos para cada foto), com as mesmas informações no parênteses.
+
+# IMPORTANTE: TODAS AS VEZES QUE ALTERARMOS ESTE ARQUIVO PRECISAREMOS FAZER: 
+#   - python manage.py makemigrations
+#   - python manage.py migrate
 class Fotografia(models.Model):# Model é uma classe
+
+    OPCOES_CATEGORIA = [
+      ('NEBULOSA', 'Nebulosa'),
+      ('ESTRELA', 'Estrela'),
+      ('GALAXIA', 'Galáxia'),
+      ('PLANETA', 'Planeta'),
+      ('ASTEROIDE', 'Asteroide'),
+      ('TERRA', 'Terra'),
+      ('MARTE', 'Marte')
+    ]
+
+# IMPORTANTE: TODAS AS VEZES QUE ALTERARMOS ESTE ARQUIVO PRECISAREMOS FAZER: 
+#   - python manage.py makemigrations
+#   - python manage.py migrate
     nome = models.CharField(max_length=100, null=False, blank=False)
     legenda = models.CharField(max_length=150, null=False, blank=False)
+    categoria = models.CharField(max_length=100, choices=OPCOES_CATEGORIA, default='')
     descricao = models.TextField(null=False, blank=False)
-    foto = models.CharField(max_length=100, null=False, blank=False)
+    foto = models.ImageField(upload_to='fotos/%y/%m/%d/', blank=True)
+    publicada = models.BooleanField(default=False)
+    data_fotografia = models.DateTimeField(default=datetime.now, blank=False)
     
     def __str__(self):
-        return f'Fotografia [nome={self.nome}]'
-    
+        # return f'Fotografia [nome={self.nome}]' # É bom quando fazemos teste pelo terminal
+        return self.nome 
+      
+      
+      
 # CharField é do tipo String no banco de dados. 
 # max_length é o varchar
 # null = False é o Not null, ou seja Não nulo
