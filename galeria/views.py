@@ -30,3 +30,13 @@ def index(request):
 def imagem(request, foto_id):# foto_id sendo recebida de urls.py
     fotografia = get_object_or_404(Fotografia, pk=foto_id)# Ou pega o objeto ou diz que ele não foi encontrado
     return render(request, 'galeria/imagem.html', {"fotografia": fotografia})
+
+def buscar(request):
+    fotografias = Fotografia.objects.order_by('-data_fotografia').filter(publicada=True)# Ordenando por data_fotografia e tb filtrando
+    
+    if 'buscar' in request.GET:
+        nome_a_buscar = request.GET['buscar']# Este buscar faz referência ao name="buscar" da página menu.html
+        if nome_a_buscar:
+            fotografias = fotografias.filter(nome__icontains=nome_a_buscar)# icontains é case-insensitive => usa 2 underlines
+   
+    return render(request, 'galeria/buscar.html', {'cards': fotografias})
